@@ -33,7 +33,7 @@ def create_tables(): #create table
     print("table created")
     
 
-def insert_teacher(name,age): #insert data
+def insert_teacher(name,age): #insert data in teacher table
     conn= db_connection()
     cursor= conn.cursor()
     cursor.execute("INSERT INTO teacher (name, age) VALUES(%s,%s) RETURNING id",(name,age))
@@ -72,11 +72,71 @@ def modify_teacher(): #modify table to add column
 def modify_course(): #modify table to add column
     conn= db_connection()
     cursor= conn.cursor()
-    cursor.execute("ALTER TABLE courses ADD department_id INT REFERENCES departments(department_id) on delete cascade")
+    cursor.execute("ALTER TABLE students ADD course_id INT REFERENCES courses(course_id) on delete cascade")
     conn.commit()
     cursor.close()
     conn.close()
     print("column added")
+
+
+
+def insert_departments(departments):#insert data in department table
+    conn= db_connection()
+    cursor= conn.cursor()
+    cursor.executemany("INSERT INTO departments (department_id, department_name) VALUES(%s,%s)", departments)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print("data inserted")
+
+def department_name():
+    return [
+        (101, "English"),
+        (102, "Nepali"),
+        (103, "Spanish")
+    ]
+
+def insert_course(courses):#insert data in course table
+    conn= db_connection()
+    cursor= conn.cursor()
+    cursor.executemany("INSERT INTO courses (course_id, course_name, credits, department_id) VALUES(%s,%s,%s,%s)", courses)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print("data inserted")
+
+def course_name():
+    return [
+        (201, "English-literature",4,101),
+        (202, "Nepali-literature",4,102),
+        (203, "Spanish-literature",4,103)
+    ]
+
+
+def insert_students(students): #insert data into students
+    conn=db_connection()
+    cursor= conn.cursor()
+    cursor.executemany("INSERT INTO students (student_id, first_name, last_name, email, enrollment_date, course_id) VALUES(%s, %s, %s, %s, %s, %s)", students)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print("data inserted")
+
+def student_name():
+    return [
+        (1,'John', 'Doe', 'john.doe@example.com','2025-3-1',201),
+        (2,'Jane', 'Smith', 'jane.smith@example.com','2025-3-3',202),
+        (3,'Emily', 'Johnson', 'emily.johnson@example.com', '2025-3-5',203)
+    ]
+
+def truncate_teacher(): #drop table 
+    conn=db_connection()
+    cursor= conn.cursor()
+    cursor.execute("drop TABLE teacher")
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print("teachers table truncated")
 
 
 
@@ -89,5 +149,12 @@ if __name__=="__main__": #executes the function
     #update_teacher("rita", 20)
     #delete_teacher(30)
     #modify_teacher()
-    modify_course()
+    #modify_course()
+
+    # students= student_name()
+    # insert_students(students)
+
+    #truncate_teacher()
+
+    
     
