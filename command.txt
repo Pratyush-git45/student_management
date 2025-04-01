@@ -1,0 +1,58 @@
+create database student_management;
+
+create table students(
+  student_id serial primary key,
+  first_name varchar(100) not null,
+  last_name varchar(100) not null,
+  email varchar(100) unique,
+  enrollment_date date default current_date
+);
+
+create table courses(
+  course_id serial primary key,
+  course_name varchar(100) not null,
+  department_id int,
+  credits int not null
+);
+
+
+create table enrollments(
+  enrollment_id serial primary key,
+  student_id int references students(student_id) on delete cascade,
+  course_id int references courses(course_id) on delete cascade,
+  grade varchar(2)
+);
+
+create table departments(
+  department_id serial primary key,
+  department_name varchar(100) not null
+);
+
+
+INSERT INTO students (student_id, first_name, last_name, email, enrollment_date)
+values
+  (1,'John', 'Doe', 'john.doe@example.com','2025-3-1'),
+  (2,'Jane', 'Smith', 'jane.smith@example.com','2025-3-3'),
+  (3,'Emily', 'Johnson', 'emily.johnson@example.com', '2025-3-5');
+
+
+INSERT INTO courses (course_id, course_name, department_id, credits)
+values
+  (1,'english', 101, 4),
+  (2,'nepali', 102, 4),
+  (3,'maths', 103, 4);
+
+ 
+INSERT INTO departments (department_id,department_name)
+values
+  (101,'english department'),
+  (102,'nepali department'),
+  (103,'maths department');
+
+INSERT INTO enrollments (student_id, course_id, grade)
+VALUES
+(1, 1, 'A'), 
+(2, 1, 'B'), 
+(3, 1, 'C');
+
+asdfasdfasdf
